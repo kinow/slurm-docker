@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Based on:
 #  - https://bitbucket.org/deardooley/agave-docker/src/master/test-containers/schedulers/slurm/Dockerfile
 #  - https://ubuntuforums.org/showthread.php?t=2404746
+#  - https://stackoverflow.com/questions/46966876/installing-emulating-slurm-on-an-ubuntu-16-04-desktop-slurmd-fails-to-start
 
 RUN apt-get update && apt-get install -y \
     munge \
