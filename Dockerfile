@@ -37,7 +37,9 @@ RUN set -x \
 	&& chown -R root:root /var/run/munge \
 	&& chown -R root:root /etc/munge
 
-COPY slurm.conf /etc/sysconfig/slurm/slurm.conf
+RUN sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config
+
+COPY slurm.conf /etc/slurm-llnl/slurm.conf
 
 COPY supervisord.conf /etc/supervisord.conf
 
