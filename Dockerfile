@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
  && rm -rf /var/lib/apt/lists/*
 
 RUN set -x \
-    && mkdir /var/spool/slurmd \
+    && mkdir /var/run/slurm-llnl/ \
         /var/run/slurmd \
         /var/run/slurmdbd \
         /var/lib/slurmd \
@@ -33,6 +33,7 @@ RUN set -x \
     && /usr/sbin/create-munge-key -f \
     && chown -R slurm:slurm /var/*/slurm* \
     && chown -R root:root /var/log/munge \
+    && chown -R root:root /var/run/slurm-llnl \
 	&& chown -R root:root /var/lib/munge \
 	&& chown -R root:root /var/run/munge \
 	&& chown -R root:root /etc/munge
