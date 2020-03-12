@@ -20,6 +20,7 @@ RUN set -x \
         /var/lib/slurmd \
         /var/log/slurm \
         /var/run/munge \
+        /run/sshd \
     && touch /var/lib/slurmd/node_state \
         /var/lib/slurmd/front_end_state \
         /var/lib/slurmd/job_state \
@@ -29,20 +30,22 @@ RUN set -x \
         /var/lib/slurmd/assoc_usage \
         /var/lib/slurmd/qos_usage \
         /var/lib/slurmd/fed_mgr_state \
+    && /usr/sbin/create-munge-key -f \
     && chown -R slurm:slurm /var/*/slurm* \
-    && /usr/sbin/create-munge-key -f 
-
-RUN addgroup testuser
-RUN useradd -rm -d /home/testuser -s /bin/bash -g testuser -u 1000 testuser && \
-	echo "testuser:testuser" | chpasswd
+    && chown -R root:root /var/log/munge \
+	&& chown -R root:root /var/lib/munge \
+	&& chown -R root:root /var/run/munge \
+	&& chown -R root:root /etc/munge
 
 COPY slurm.conf /etc/sysconfig/slurm/slurm.conf
 
 COPY supervisord.conf /etc/supervisord.conf
 
-USER testuser
+# USER testuser
+RUN addgroup testuser
+RUN useradd -rm -d /home/testuser -s /bin/bash -g testuser -u 1000 testuser && \
+	echo "testuser:testuser" | chpasswd
 COPY slurm.submit /home/testuser/slurm.submit
-WORKDIR /home/testuser
 
 EXPOSE 10389 22 6817 6818
 CMD /usr/bin/supervisord
